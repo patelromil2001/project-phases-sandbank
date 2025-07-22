@@ -122,8 +122,8 @@ export default function DashboardPage() {
 
   // Use profileSlug if exists else fallback to _id
   const profileUrl = userData.profileSlug
-    ? `http://localhost:3000/profile/${userData.profileSlug}`
-    : `http://localhost:3000/profile/${userData._id}`;
+    ? `https://project-phases-sandbank.vercel.app/${userData.profileSlug}`
+    : `https://project-phases-sandbank.vercel.app/${userData._id}`;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
