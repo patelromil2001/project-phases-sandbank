@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation"; // Removed useSearchParams
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext"; // Ensure this path is correct for your AuthContext
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // Removed const searchParams = useSearchParams();
   const { refreshAuth } = useAuth(); // Assuming refreshAuth is provided by your AuthContext
 
   const [showReset, setShowReset] = useState(false);
@@ -37,16 +37,16 @@ export default function LoginPage() {
   const [resetSuccess, setResetSuccess] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
 
-  useEffect(() => {
-    const message = searchParams.get("message");
-    if (message) {
-      setSuccess(message);
-      // Clean up the URL after displaying the message
-      const newUrl = new URL(window.location.href);
-      newUrl.searchParams.delete("message");
-      window.history.replaceState({}, "", newUrl.toString());
-    }
-  }, [searchParams]); // searchParams is a stable object, so it won't cause infinite re-renders
+  // Removed useEffect for searchParams message
+  // useEffect(() => {
+  //   const message = searchParams.get("message");
+  //   if (message) {
+  //     setSuccess(message);
+  //     const newUrl = new URL(window.location.href);
+  //     newUrl.searchParams.delete("message");
+  //     window.history.replaceState({}, "", newUrl.toString());
+  //   }
+  // }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,15 +73,14 @@ export default function LoginPage() {
 
       if (res.ok) {
         await refreshAuth(); // Call to refresh authentication state
-        // Optionally, redirect to a 'redirect' query param if it exists
-        const redirectTo = searchParams.get("redirect") || "/dashboard";
-        router.push(redirectTo);
+        // You might consider how to handle redirection without searchParams.get("redirect")
+        // For now, it will always redirect to /dashboard
+        router.push("/dashboard");
       } else {
         const data = await res.json();
         setError(data.error || "Invalid credentials.");
       }
     } catch (error: unknown) {
-      // Safely check the type of error
       const message =
         error instanceof Error
           ? error.message
@@ -94,7 +93,6 @@ export default function LoginPage() {
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-    // Clear error message when user starts typing again
     if (error) {
       setError("");
     }
@@ -128,7 +126,7 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          email: resetEmail.toLowerCase().trim(), // Ensure email is trimmed and lowercased
+          email: resetEmail.toLowerCase().trim(),
           newPassword: resetNewPassword,
         }),
       });
@@ -136,14 +134,15 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setResetSuccess("Password reset successfully! You can now log in with your new password.");
-        // Clear fields and close modal after a short delay
+        setResetSuccess(
+          "Password reset successfully! You can now log in with your new password."
+        );
         setResetEmail("");
         setResetNewPassword("");
         setResetConfirm("");
         setTimeout(() => {
           setShowReset(false);
-        }, 2000); // Close modal after 2 seconds
+        }, 2000);
       } else {
         setResetError(data.error || "Failed to reset password.");
       }
@@ -213,6 +212,7 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* If success messages are still needed, they'll need to be set differently, e.g., via state from a successful login or registration */}
           {success && (
             <div
               className="bg-green-50 border-2 border-green-600 rounded-md p-3"
@@ -248,7 +248,6 @@ export default function LoginPage() {
               Sign up here
             </Link>
           </div>
-          {/* Added "Forgot Password?" link to open the reset modal */}
           <div className="text-center text-sm mt-2">
             <button
               type="button"
@@ -260,10 +259,9 @@ export default function LoginPage() {
           </div>
         </form>
 
-        {/* Password Reset Modal */}
         {showReset && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-4" // Added p-4 for mobile spacing
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-4"
             role="dialog"
             aria-modal="true"
             aria-labelledby="reset-password-title"
@@ -274,7 +272,7 @@ export default function LoginPage() {
                 className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl font-bold"
                 onClick={() => {
                   setShowReset(false);
-                  setResetError(""); // Clear errors/success messages on close
+                  setResetError("");
                   setResetSuccess("");
                 }}
                 aria-label="Close reset password modal"

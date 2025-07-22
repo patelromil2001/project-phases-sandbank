@@ -251,6 +251,9 @@ function StatCard({ label, value, color }: { label: string; value: number; color
 
 // Book card component with optional onAdd and onView callbacks
 function BookCard({ book, onAdd, onView }: { book: Book; onAdd?: (book: Book) => void; onView?: () => void }) {
+  // Determine appropriate alt text for the image
+  const imageAltText = book.title ? `Cover image for the book "${book.title}"` : 'Book cover image';
+
   return (
     <div className="bg-white rounded-xl shadow-md border border-yellow-100 p-4 flex flex-col hover:shadow-lg transition-shadow">
       <Image
@@ -259,7 +262,7 @@ function BookCard({ book, onAdd, onView }: { book: Book; onAdd?: (book: Book) =>
           book.volumeInfo?.imageLinks?.thumbnail ||
           '/file.svg'
         }
-        alt={book.title}
+        alt={imageAltText} // Added alt prop here
         width={160}
         height={160}
         className="object-contain mb-2 rounded"
@@ -415,6 +418,9 @@ function BookDetailModal({
     }
   };
 
+  // Determine appropriate alt text for the image in the modal
+  const imageAltText = book.title ? `Cover image for "${book.title}"` : 'Book cover image';
+
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" onClick={onClose}>
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative" onClick={stop}>
@@ -423,7 +429,7 @@ function BookDetailModal({
         </button>
         <Image
           src={book.thumbnail || '/file.svg'}
-          alt={book.title}
+          alt={imageAltText} // Added alt prop here
           width={128}
           height={160}
           className="object-contain mx-auto mb-4 rounded"
