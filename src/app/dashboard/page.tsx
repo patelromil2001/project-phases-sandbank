@@ -12,6 +12,9 @@ type UserType = {
   profileSlug?: string;
 };
 
+// Define the base URL using the environment variable
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; // Fallback for safety
+
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   // Use user type or null initially
@@ -120,10 +123,11 @@ export default function DashboardPage() {
     );
   }
 
-  // Use profileSlug if exists else fallback to _id
+  // Use profileSlug if exists, else fallback to _id
+  // Construct the profile URL using the dynamic BASE_URL
   const profileUrl = userData.profileSlug
-    ? `https://project-phases-sandbank.vercel.app/${userData.profileSlug}`
-    : `https://project-phases-sandbank.vercel.app/${userData._id}`;
+    ? `${BASE_URL}/profile/${userData.profileSlug}`
+    : `${BASE_URL}/profile/${userData._id}`;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
