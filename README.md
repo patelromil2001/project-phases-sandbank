@@ -2,7 +2,13 @@
 
 # Live Production Link
 
-http://project-phases-sandbank.vercel.app
+## http://project-phases-sandbank.vercel.app
+
+Login Creadentials
+Email: patelromil.2001@gmail.com
+Password: Qwerty@123456
+
+---
 
 A modern, full-stack web application for tracking books, taking notes, and analyzing reading habits. Built with Next.js 15, MongoDB, and styled with a unique Minecraft-inspired design.
 
