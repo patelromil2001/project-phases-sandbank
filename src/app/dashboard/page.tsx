@@ -13,7 +13,8 @@ type UserType = {
 };
 
 // Define the base URL using the environment variable
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; // Fallback for safety
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; 
+// Fallback for safety
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
