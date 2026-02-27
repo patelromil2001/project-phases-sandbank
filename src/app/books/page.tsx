@@ -263,8 +263,8 @@ function BookCard({ book, onAdd, onView }: { book: Book; onAdd?: (book: Book) =>
           '/file.svg'
         }
         alt={imageAltText} // Added alt prop here
-        width={160}
-        height={160}
+        width={222}
+        height={222}
         className="object-contain mb-2 rounded"
         onError={(e) => {
           const target = e.target as HTMLImageElement;
@@ -430,7 +430,7 @@ function BookDetailModal({
         <Image
           src={book.thumbnail || '/file.svg'}
           alt={imageAltText} // Added alt prop here
-          width={128}
+          width={160}
           height={160}
           className="object-contain mx-auto mb-4 rounded"
         />
