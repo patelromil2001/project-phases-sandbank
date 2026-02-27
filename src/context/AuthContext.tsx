@@ -14,7 +14,7 @@ interface User {
 
 interface AuthContextProps {
   user: User | null;
-  // loading: boolean;
+  loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
   logout: () => Promise<void>;
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
-        // loading,
+        loading,
         error,
         isAuthenticated: !!user,
         logout,
